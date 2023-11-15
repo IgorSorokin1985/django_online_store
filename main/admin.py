@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from main.models import ContactData
+
+@admin.register(ContactData)
+class ContactDataAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'name', 'email')

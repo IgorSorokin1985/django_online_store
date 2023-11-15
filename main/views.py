@@ -6,7 +6,7 @@ from django.db import connection
 
 def index(request):
     with connection.cursor() as cursor:
-        cursor.execute(f'SELECT * FROM catalog_product')
+        cursor.execute(f'SELECT * FROM catalog_product ORDER BY data_created DESC LIMIT 5')
         print(cursor.fetchall())
     return render(request, 'main/index.html')
 

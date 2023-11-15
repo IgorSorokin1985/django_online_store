@@ -20,8 +20,8 @@ class Product(models.Model):
     product_image = models.ImageField(upload_to='catalog/', **NULLABLE, verbose_name='Фото')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория ID', **NULLABLE)
     price = models.IntegerField(verbose_name='Цена за шт.')
-    data_created = models.DateField(verbose_name='Дата создания', **NULLABLE)
-    data_last_change = models.DateField(verbose_name='Дата последнего изменения', **NULLABLE)
+    data_created = models.DateField(verbose_name='Дата создания', default='2023-01-01')
+    data_last_change = models.DateField(verbose_name='Дата последнего изменения', default='2023-01-01')
 
     def __str__(self):
         # Строковое отображение объекта

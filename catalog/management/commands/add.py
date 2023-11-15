@@ -9,7 +9,7 @@ class Command(BaseCommand):
                 "product_name": "Картофель",
                 "product_description": "Картофель молодой",
                 "product_image": "",
-
+                "category": 1,
                 "price": 100,
                 "data_created": "2023-11-14",
                 "data_last_change": "2023-11-14"

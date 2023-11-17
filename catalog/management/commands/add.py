@@ -1,47 +1,56 @@
 from django.core.management import BaseCommand
 from catalog.models import Product, Category
-from django.db import connection
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         list_products = [
             {
-                "product_name": "Картофель",
-                "product_description": "Картофель молодой",
-                "product_image": "",
-                #"category": 1,
+                "product_name": "Potates",
+                "product_description": "Potates 2023",
+                "product_image": "catalog/potates.jpg",
+                "category_id": 1,
                 "price": 100,
-                "data_created": "2023-11-14",
-                "data_last_change": "2023-11-14"
+                "data_created": "2023-01-01",
+                "data_last_change": "2023-01-01"
             },
             {
-                "product_name": "Редис",
-                "product_description": "Редис прошлогодний",
-                "product_image": "",
-
-                "price": 120,
-                "data_created": "2023-11-14",
-                "data_last_change": "2023-11-14"
-            },
-            {
-                "product_name": "Яблоки",
-                "product_description": "Яблоки Семеренко",
-                "product_image": "",
-
-                "price": 150,
-                "data_created": "2023-11-14",
-                "data_last_change": "2023-11-14"
-            },
-            {
-                "product_name": "Бананы",
-                "product_description": "Бананы желтые",
-                "product_image": "",
-
+                "product_name": "Carrot",
+                "product_description": "Carrot 2023",
+                "product_image": "catalog/carrot.jpg",
+                "category_id": 1,
                 "price": 60,
-                "data_created": "2023-11-14",
-                "data_last_change": "2023-11-14"
+                "data_created": "2023-01-01",
+                "data_last_change": "2023-01-01"
+            },
+            {
+                "product_name": "Kiwi",
+                "product_description": "Kiwi Egipet",
+                "product_image": "catalog/kivi.jpg",
+                "category_id": 2,
+                "price": 150,
+                "data_created": "2023-01-01",
+                "data_last_change": "2023-01-01"
+            },
+            {
+                "product_name": "Apple",
+                "product_description": "Apple Semerenko",
+                "product_image": "catalog/apple.jpg",
+                "category_id": 2,
+                "price": 110,
+                "data_created": "2023-01-01",
+                "data_last_change": "2023-01-01"
+            },
+            {
+                "product_name": "Vinograd",
+                "product_description": "Vinograd 2023",
+                "product_image": "catalog/vinograd.jpg",
+                "category_id": 2,
+                "price": 200,
+                "data_created": "2023-01-01",
+                "data_last_change": "2023-01-01"
             }
+
         ]
 
         self.truncate_table_restart_id()
@@ -53,6 +62,5 @@ class Command(BaseCommand):
 
     @classmethod
     def truncate_table_restart_id(cls):
-        with connection.cursor() as cursor:
-            cursor.execute(f'TRUNCATE TABLE catalog_product RESTART IDENTITY CASCADE')
+        Product.objects.all().delete()
         print('Данные удалены')

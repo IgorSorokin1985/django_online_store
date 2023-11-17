@@ -1,19 +1,16 @@
 from django.shortcuts import render
-from django.db import connection
+from catalog.models import Product
+from main.models import ContactData
 
 # Create your views here.
 
 
 def index(request):
-    with connection.cursor() as cursor:
-        cursor.execute(f'SELECT * FROM catalog_product ORDER BY data_created DESC LIMIT 5')
-        print(cursor.fetchall())
+    print(Product.objects.all())
     return render(request, 'main/index.html')
 
 def contact_us(request):
-    with connection.cursor() as cursor:
-        cursor.execute(f'SELECT * FROM main_contactdata')
-        data = {'name': cursor.fetchall()}
+    data = {'name': ContactData.objects.get(pk=1)}
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')

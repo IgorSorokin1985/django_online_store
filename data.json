@@ -1,0 +1,83 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "category_name": "Vegetables",
+      "category_description": "Different vegetables"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "category_name": "Fruits",
+      "category_description": "Different fruits"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 9,
+    "fields": {
+      "product_name": "Potates",
+      "product_description": "Potates 2023",
+      "product_image": "catalog/potates.jpg",
+      "category": 1,
+      "price": 100,
+      "data_created": "2023-01-01",
+      "data_last_change": "2023-01-01"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 10,
+    "fields": {
+      "product_name": "Carrot",
+      "product_description": "Carrot 2023",
+      "product_image": "catalog/carrot.jpg",
+      "category": 1,
+      "price": 60,
+      "data_created": "2023-01-01",
+      "data_last_change": "2023-01-01"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 11,
+    "fields": {
+      "product_name": "Kiwi",
+      "product_description": "Kiwi Egipet",
+      "product_image": "catalog/kivi.jpg",
+      "category": 2,
+      "price": 150,
+      "data_created": "2023-01-01",
+      "data_last_change": "2023-01-01"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 12,
+    "fields": {
+      "product_name": "Apple",
+      "product_description": "Apple Semerenko",
+      "product_image": "catalog/apple.jpg",
+      "category": 2,
+      "price": 110,
+      "data_created": "2023-01-01",
+      "data_last_change": "2023-01-01"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 13,
+    "fields": {
+      "product_name": "Vinograd",
+      "product_description": "Vinograd 2023",
+      "product_image": "catalog/vinograd.jpg",
+      "category": 2,
+      "price": 200,
+      "data_created": "2023-01-01",
+      "data_last_change": "2023-01-01"
+    }
+  }
+]

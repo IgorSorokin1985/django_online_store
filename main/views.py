@@ -6,7 +6,7 @@ from main.models import ContactData
 
 
 def index(request):
-    print(Product.objects.all())
+
     contex = {
         'objects_list': Product.objects.all()
     }
@@ -19,3 +19,12 @@ def contact_us(request):
         email = request.POST.get('email')
         print(username, email)
     return render(request, 'main/contact.html', context=data)
+
+
+def product_info(request, pk):
+
+    contex = {
+        'object': Product.objects.get(pk=pk)
+    }
+    print(contex)
+    return render(request, 'main/product_info.html', contex)

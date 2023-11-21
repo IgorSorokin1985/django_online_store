@@ -1,24 +1,43 @@
 {% extends 'main/base.html' %}
+{% load my_tags%}
 
 {% block content %}
+<div>
+    <h1 class="container text-center pt-5">
+        Информация о товаре
+    </h1>
 
 
-        <div class="col">
-          <div class="card shadow-sm">
-            <img src="/media/{{ object.product_image }}" alt="image" height=200px width=300px>
-            <div class="card-body">
-              <p class="card-text">{{ object.product_name }}</p>
-              <p class="card-text">{{ object.product_description }}</p>
-              <p class="card-text">Price - {{ object.price }} RUB</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+    <div class="py-5">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img src="{{ object.product_image|my_media }}" alt="image" height=200px width=300px>
+                        <div class="card-body">
+                            <p class="card-text">{{ object.product_name }}</p>
+                            <p class="card-text">{{ object.product_description }}</p>
+                            <p class="card-text">Category - {{ object.category }}</p>
+                            <p class="card-text">Price - {{ object.price }} RUB</p>
+                            <p class="card-text">Data created - {{ object.data_created }}</p>
+                            <p class="card-text">Data last change - {{ object.data_last_change }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="{% url 'index' %}" type="button" class="btn btn-sm btn-outline-secondary">Back</a>
+                                </div>
+                                <small class="text-body-secondary">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
 
+            </div>
+        </div>
+    </div>
+
+
+</div>
 
 {% endblock %}

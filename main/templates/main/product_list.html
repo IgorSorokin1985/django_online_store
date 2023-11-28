@@ -2,19 +2,17 @@
 {% load my_tags%}
 {% block content %}
 <div>
+
     <h1 class="container text-center pt-5">
         Список Товаров
     </h1>
-
-
     <div class="py-5">
         <div class="container">
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-
-                {% for object in objects_list %}
-
+                {% for object in page_obj %}
+                {# Each "object" is a Product model object. #}
                 <div class="col">
                     <div class="card shadow-sm">
                         <img src="{{ object.product_image|my_media }}" alt="image" height=200px width=300px>
@@ -33,17 +31,28 @@
                     </div>
                 </div>
 
+
                 {% endfor %}
 
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
             </div>
-            <form class="container row text-center" method="post">
-                {% csrf_token %}
-                {% for index in number_pages %}
-                <input class="col-1" name="number_page" type="submit" value="{{index}}">
-                {% endfor %}
-            </form>
         </div>
-
     </div>
 
 

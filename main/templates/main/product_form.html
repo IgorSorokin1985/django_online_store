@@ -3,21 +3,19 @@
 
 {% block content %}
 
+
 <div class="container text-center">
-    <h1>
-        Оставьте свои контакты)))
+    <h1 class="container text-center pt-5">
+        You can add product
     </h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-
 
         <input type="submit" value="Отправить">
     </form>
 
-    <div>
-        <h2>{{name}}</h2>
-    </div>
 </div>
+
 
 {% endblock %}

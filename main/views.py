@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from catalog.models import Product
-from main.models import ContactData
+from main.models import ContactData, Article
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
 
@@ -33,4 +33,24 @@ class ContactCreateView(CreateView):
         'name': ContactData.objects.get(pk=1)
     }
     success_url = reverse_lazy('contact_us')
+
+
+class ArticleCreateView(CreateView):
+    model = Article
+    template_name = 'main/article_form.html'
+    fields = ['title', 'slug', 'text', 'blog_image', 'data_created', 'data_published']
+    success_url = reverse_lazy('article_list')
+
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'main/article_info.html'
+
+
+class ArticleListView(ListView):
+    paginate_by = 6
+    model = Article
+    template_name = 'main/article_list.html'
+    extra_context = {
+        'objects_list': Article.objects.all()
+    }
 

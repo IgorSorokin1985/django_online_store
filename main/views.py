@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from catalog.models import Product
 from main.models import ContactData, Article
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -63,7 +62,7 @@ class ArticleDetailView(DetailView):
         self.object.save()
         context = self.get_context_data(object=self.object)
 
-        if self.object.number_views == 100:
+        if self.object.number_views == 25:
             send_mail(
                 subject='Congratulations',
                 message='Hello! Your article has 100 views',

@@ -4,6 +4,8 @@ from main.models import ContactData, Article
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
+from django.core.mail import send_mail
+from config.settings import EMAIL_HOST_USER
 
 # Create your views here.
 class ProductListView(ListView):
@@ -60,6 +62,15 @@ class ArticleDetailView(DetailView):
         self.object.number_views += 1
         self.object.save()
         context = self.get_context_data(object=self.object)
+
+        if self.object.number_views == 100:
+            send_mail(
+                subject='Congratulations',
+                message='Hello! Your article has 100 views',
+                from_email=EMAIL_HOST_USER,
+                recipient_list=['isorokin1985@gmail.com']
+            )
+
         return self.render_to_response(context)
 
 

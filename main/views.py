@@ -70,14 +70,10 @@ class ArticleListView(ListView):
         context = super().get_context_data(**kwargs)
         result = []
         for object in Article.objects.all():
-            print(object.is_published)
             if object.is_published:
-                print('+1')
                 result.append(object)
-        print(result)
 
         context["object_list"] = sorted(result, key=lambda object: object.number_views, reverse=True)
-        print(context["object_list"])
         return context
 
 

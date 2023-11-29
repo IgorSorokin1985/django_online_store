@@ -23,6 +23,7 @@ class Article(models.Model):
     data_created = models.DateField(verbose_name='Data created', default='2023-01-01')
     data_published = models.DateField(verbose_name='Data published', default='2023-01-01')
     number_views = models.IntegerField(verbose_name='number of views', default=0)
+    is_published = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.title}'

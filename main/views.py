@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from catalog.models import Product
 from main.models import ContactData, Article
-from django.views.generic import ListView, DetailView, CreateView
-from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy, reverse
+from pytils.translit import slugify
 
 # Create your views here.
 class ProductListView(ListView):
@@ -39,18 +40,57 @@ class ArticleCreateView(CreateView):
     model = Article
     template_name = 'main/article_form.html'
     fields = ['title', 'slug', 'text', 'blog_image', 'data_created', 'data_published']
-    success_url = reverse_lazy('article_list')
+
+
+    #def get_context_data(self, **kwargs):
+    #    context = super(ArticleCreateView, self).get_context_data(**kwargs)
+    #    context['slug'] = slugify(kwargs['title'])
+    #    return context
+
+
+    def get_success_url(self):
+        return reverse('article_info', args=[self.object.pk])
 
 class ArticleDetailView(DetailView):
     model = Article
     template_name = 'main/article_info.html'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.number_views += 1
+        self.object.save()
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
+
 
 class ArticleListView(ListView):
-    paginate_by = 6
     model = Article
-    template_name = 'main/article_list.html'
-    extra_context = {
-        'objects_list': Article.objects.all()
-    }
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        result = []
+        for object in Article.objects.all():
+            print(object.is_published)
+            if object.is_published:
+                print('+1')
+                result.append(object)
+        print(result)
+
+        context["object_list"] = sorted(result, key=lambda object: object.number_views, reverse=True)
+        print(context["object_list"])
+        return context
+
+
+class ArticleUpdateView(UpdateView):
+    model = Article
+    template_name = 'main/article_form.html'
+    fields = ['title', 'slug', 'text', 'blog_image', 'data_created', 'data_published', 'is_published']
+
+    def get_success_url(self):
+        return reverse('article_info', args=[self.object.pk])
+
+
+class ArticleDeleteView(DeleteView):
+    model = Article
+    template_name = 'main/article_confirm_delete.html'
+    success_url = reverse_lazy('article_list')

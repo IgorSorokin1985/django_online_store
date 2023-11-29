@@ -62,7 +62,7 @@ class ArticleDetailView(DetailView):
         self.object.save()
         context = self.get_context_data(object=self.object)
 
-        if self.object.number_views == 25:
+        if self.object.number_views == 100:
             send_mail(
                 subject='Congratulations',
                 message='Hello! Your article has 100 views',

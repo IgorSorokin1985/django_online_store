@@ -2,7 +2,6 @@ from catalog.models import Product
 from main.models import ContactData, Article
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
-from pytils.translit import slugify
 from django.core.mail import send_mail
 from config.settings import EMAIL_HOST_USER
 
@@ -39,18 +38,12 @@ class ContactCreateView(CreateView):
 
 class ArticleCreateView(CreateView):
     model = Article
-    template_name = 'main/article_form.html'
-    fields = ['title', 'slug', 'text', 'blog_image', 'data_created', 'data_published']
-
-
-    #def get_context_data(self, **kwargs):
-    #    context = super(ArticleCreateView, self).get_context_data(**kwargs)
-    #    context['slug'] = slugify(kwargs['title'])
-    #    return context
+    fields = ['title', 'text', 'blog_image', 'data_created', 'data_published']
 
 
     def get_success_url(self):
-        return reverse('article_info', args=[self.object.pk])
+        return reverse('article_info', args=[self.object.pk, self.object.slug])
+
 
 class ArticleDetailView(DetailView):
     model = Article
@@ -93,7 +86,7 @@ class ArticleUpdateView(UpdateView):
     fields = ['title', 'slug', 'text', 'blog_image', 'data_created', 'data_published', 'is_published']
 
     def get_success_url(self):
-        return reverse('article_info', args=[self.object.pk])
+        return reverse('article_info', args=[self.object.pk, self.object.slug])
 
 
 class ArticleDeleteView(DeleteView):

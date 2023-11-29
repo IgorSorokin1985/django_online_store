@@ -1,4 +1,5 @@
 from django.db import models
+from pytils.translit import slugify
 
 NULLABLE = {'blank': True, 'null': True }
 
@@ -17,7 +18,7 @@ class ContactData(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=150, verbose_name='title')
-    slug = models.CharField(max_length=150, verbose_name='slug')
+    slug = models.CharField(max_length=150, verbose_name='slug', **NULLABLE)
     text = models.TextField(verbose_name='text')
     blog_image = models.ImageField(upload_to='article/', **NULLABLE, verbose_name='article_image')
     data_created = models.DateField(verbose_name='Data created', default='2023-01-01')
@@ -27,6 +28,11 @@ class Article(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(args, kwargs)
 
     class Meta:
         verbose_name = 'article'  # Настройка для наименования одного объекта

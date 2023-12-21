@@ -27,7 +27,9 @@
                                     </a>
 
                                 </div>
-                                <small class="text-body-secondary">9 mins</small>
+                                {% if object.active_version_number  %}
+                                <small class="text-body-secondary">{{ object.active_version_number }} № {{ object.name_version }}</small>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

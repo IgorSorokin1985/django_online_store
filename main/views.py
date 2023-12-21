@@ -6,24 +6,7 @@ from django.core.mail import send_mail
 from config.settings import EMAIL_HOST_USER
 
 # Create your views here.
-class ProductListView(ListView):
-    paginate_by = 6
-    model = Product
-    template_name = 'main/product_list.html'
-    extra_context = {
-        'objects_list': Product.objects.all()
-    }
 
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = 'main/product_info.html'
-
-
-class ProductCreateView(CreateView):
-    model = Product
-    template_name = 'main/product_form.html'
-    fields = ['product_name', 'product_description', 'product_image', 'category', 'price']
-    success_url = reverse_lazy('product_list')
 
 
 class ContactCreateView(CreateView):
@@ -42,7 +25,7 @@ class ArticleCreateView(CreateView):
 
 
     def get_success_url(self):
-        return reverse('article_info', args=[self.object.pk, self.object.slug])
+        return reverse('article_info', args=[self.object.slug])
 
 
 class ArticleDetailView(DetailView):
@@ -86,7 +69,7 @@ class ArticleUpdateView(UpdateView):
     fields = ['title', 'slug', 'text', 'blog_image', 'data_created', 'data_published', 'is_published']
 
     def get_success_url(self):
-        return reverse('article_info', args=[self.object.pk, self.object.slug])
+        return reverse('article_info', args=[self.object.slug])
 
 
 class ArticleDeleteView(DeleteView):

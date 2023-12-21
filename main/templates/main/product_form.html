@@ -2,19 +2,27 @@
 {% load my_tags%}
 
 {% block content %}
-
-
-<div class="container text-center">
+<div class="container">
     <h1 class="container text-center pt-5">
         You can add product
     </h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
+    <form method="post" enctype="multipart/form-data" class="container row">
+        <div class="container col-6">
 
-        <input type="submit" value="Отправить">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <div class="container col-6">
+            {{ formset.management_form }}
+            {% for form in formset.forms %}
+            {{ form.as_p }}
+            {% endfor %}
+            <input type="submit" value="Отправить">
+        </div>
     </form>
 
+
+</div>
 </div>
 
 

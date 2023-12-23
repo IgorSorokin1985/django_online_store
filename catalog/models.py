@@ -43,3 +43,4 @@ class Version(models.Model):
     class Meta:
         verbose_name = 'Версия'  # Настройка для наименования одного объекта
         verbose_name_plural = 'Версии'  # Настройка для наименования набора объектов
+        unique_together = (('number_version', 'product'),)

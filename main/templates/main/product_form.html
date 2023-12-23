@@ -11,13 +11,14 @@
 
             {% csrf_token %}
             {{ form.as_p }}
+            <input type="submit" value="Отправить">
         </div>
         <div class="container col-6">
             {{ formset.management_form }}
             {% for form in formset.forms %}
             {{ form.as_p }}
             {% endfor %}
-            <input type="submit" value="Отправить">
+
         </div>
     </form>
 

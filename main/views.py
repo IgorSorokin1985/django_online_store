@@ -14,7 +14,7 @@ class ContactCreateView(CreateView):
     template_name = 'main/contact.html'
     fields = ['name', 'email']
     extra_context = {
-        'name': ContactData.objects.get(pk=1)
+        'name': 'Contact'
     }
     success_url = reverse_lazy('contact_us')
 

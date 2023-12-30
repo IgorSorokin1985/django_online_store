@@ -23,11 +23,14 @@
                             <p class="card-text">Price - {{ object.price }} RUB</p>
                             <p class="card-text">Data created - {{ object.data_created }}</p>
                             <p class="card-text">Data last change - {{ object.data_last_change }}</p>
+                            <p class="card-text">Owner: {{ object.owner|default:"-" }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a href="{% url 'product_list' %}" type="button" class="btn btn-sm btn-outline-secondary">Back</a>
+                                    {% if user.is_authenticated %}
                                     <a href="{% url 'product_update' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
                                     <a href="{% url 'product_delete' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Delete</a>
+                                    {% endif %}
                                 </div>
                                 <small class="text-body-secondary">9 mins</small>
                             </div>

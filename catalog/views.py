@@ -42,6 +42,12 @@ class ProductCreateView(CreateView):
     def get_success_url(self):
         return reverse('product_info', args=[self.object.pk])
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
 
 
 class ProductUpdateView(UpdateView):

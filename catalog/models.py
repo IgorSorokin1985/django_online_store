@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 NULLABLE = {'blank': True, 'null': True }
 
@@ -22,6 +23,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='Цена за шт.')
     data_created = models.DateField(verbose_name='Дата создания', default='2023-01-01')
     data_last_change = models.DateField(verbose_name='Дата последнего изменения', default='2023-01-01')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='Owner')
 
     def __str__(self):
         # Строковое отображение объекта
@@ -43,3 +45,4 @@ class Version(models.Model):
     class Meta:
         verbose_name = 'Версия'  # Настройка для наименования одного объекта
         verbose_name_plural = 'Версии'  # Настройка для наименования набора объектов
+        unique_together = (('number_version', 'product'),)

@@ -12,9 +12,14 @@
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" value="Отправить">
+
                     </form>
+
                 </div>
-                <div class="card-footer"></div>
+                <div class="card-footer">
+                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'users:forgot' %}">Forgot
+                        password</a>
+                </div>
             </div>
 
         </div>

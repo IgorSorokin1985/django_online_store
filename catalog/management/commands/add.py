@@ -4,6 +4,16 @@ from catalog.models import Product, Category
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
+        list_categoryes = [
+            {
+              "category_name": "Fruits",
+              "category_description": "Any fruits",
+            },
+            {
+                "category_name": "Vegetables",
+                "category_description": "Any Vegetables",
+            },
+        ]
         list_products = [
             {
                 "product_name": "Potates",
@@ -54,6 +64,9 @@ class Command(BaseCommand):
         ]
 
         self.truncate_table_restart_id()
+
+        for category in list_categoryes:
+            Category.objects.create(**category)
 
         for product in list_products:
             Product.objects.create(**product)

@@ -30,27 +30,23 @@ class EmailVerify(View):
         user = self.get_user(uidb64)
 
         if user is not None and token_generator.check_token(user, token):
-            print(user)
-            print(token_generator.check_token(user, token))
+
             user.email_verify = True
             user.save()
             login(request, user)
             return redirect('product_list')
-        print(user)
-        print(token_generator.check_token(user, token))
+
         return redirect('users:invalid_verify')
 
     @staticmethod
     def get_user(uidb64):
         try:
-            # urlsafe_base64_decode() decodes to bytestring
             uid = urlsafe_base64_decode(uidb64).decode()
             user = User.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError,
                 User.DoesNotExist, ValidationError):
             user = None
         return user
-
 
 
 class LogoutView(BaseLogoutView):
@@ -72,22 +68,7 @@ class RegisterView(CreateView):
         #    from_email=EMAIL_HOST_USER,
         #    recipient_list=[new_user.email]
         #)
-        return super().form_valid(form)
-
-    #def post(self, request):
-    #    form = UserCreationForm(request.POST)
-#
-    #    if form.is_valid():
-    #        form.save()
-    #        email = form.cleaned_data.get('email')
-    #        password = form.cleaned_data.get('password1')
-    #        user = authenticate(email=email, password=password)
-    #        send_email_for_verify(request, user)
-    #        return redirect('confirm_email')
-    #    context = {
-    #        'form': form
-    #    }
-    #    return render(request, self.template_name, context)
+        return redirect(reverse('users:login'))
 
 
 class UserUpdateView(UpdateView):

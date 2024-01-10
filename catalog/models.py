@@ -15,6 +15,7 @@ class Category(models.Model):
         verbose_name = 'Категория'  # Настройка для наименования одного объекта
         verbose_name_plural = 'Категории'  # Настройка для наименования набора объектов
 
+
 class Product(models.Model):
     product_name = models.CharField(max_length=150, verbose_name='Название')
     product_description = models.CharField(max_length=300, verbose_name='Описание')
@@ -24,6 +25,7 @@ class Product(models.Model):
     data_created = models.DateField(verbose_name='Дата создания', default='2023-01-01')
     data_last_change = models.DateField(verbose_name='Дата последнего изменения', default='2023-01-01')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='Owner')
+    is_published = models.BooleanField(verbose_name='Опубликован', default=False)
 
     def __str__(self):
         # Строковое отображение объекта
@@ -32,6 +34,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Товар'  # Настройка для наименования одного объекта
         verbose_name_plural = 'Товары'  # Настройка для наименования набора объектов
+
 
 class Version(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт')

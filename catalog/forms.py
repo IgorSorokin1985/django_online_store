@@ -14,7 +14,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        exclude = ('owner',)
+        exclude = ('owner', 'is_published')
 
     def clean_product_name(self):
         product_name = self.cleaned_data.get('product_name').lower()
@@ -30,6 +30,18 @@ class ProductForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+
+class ModeratorProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('product_name', 'product_description', 'is_published', 'category')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+        self.fields["is_published"].widget.attrs['class'] = 'form-check-input'
 
 
 class VersionForm(forms.ModelForm):

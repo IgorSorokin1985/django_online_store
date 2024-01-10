@@ -4,12 +4,12 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy, reverse
 from django.core.mail import send_mail
 from config.settings import EMAIL_HOST_USER
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
 
-
-class ContactCreateView(CreateView):
+class ContactCreateView(LoginRequiredMixin, CreateView):
     model = ContactData
     template_name = 'main/contact.html'
     fields = ['name', 'email']
@@ -19,7 +19,7 @@ class ContactCreateView(CreateView):
     success_url = reverse_lazy('contact_us')
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     fields = ['title', 'text', 'blog_image', 'data_created', 'data_published']
 
@@ -28,7 +28,7 @@ class ArticleCreateView(CreateView):
         return reverse('article_info', args=[self.object.slug])
 
 
-class ArticleDetailView(DetailView):
+class ArticleDetailView(LoginRequiredMixin, DetailView):
     model = Article
     template_name = 'main/article_info.html'
 
@@ -49,7 +49,7 @@ class ArticleDetailView(DetailView):
         return self.render_to_response(context)
 
 
-class ArticleListView(ListView):
+class ArticleListView(LoginRequiredMixin, ListView):
     model = Article
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -63,7 +63,7 @@ class ArticleListView(ListView):
         return context
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
     template_name = 'main/article_form.html'
     fields = ['title', 'slug', 'text', 'blog_image', 'data_created', 'data_published', 'is_published']
@@ -72,7 +72,7 @@ class ArticleUpdateView(UpdateView):
         return reverse('article_info', args=[self.object.slug])
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     model = Article
     template_name = 'main/article_confirm_delete.html'
     success_url = reverse_lazy('article_list')

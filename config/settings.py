@@ -149,5 +149,6 @@ if DEBUG:
 
 AUTH_USER_MODEL = 'users.User'
 
+LOGIN_URL = '/users/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'

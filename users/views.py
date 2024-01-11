@@ -63,12 +63,7 @@ class RegisterView(CreateView):
     def form_valid(self, form):
         new_user = form.save()
         send_email_for_verify(self.request, new_user)
-        #send_mail(
-        #    subject='Congratulations',
-        #    message='You registered',
-        #    from_email=EMAIL_HOST_USER,
-        #    recipient_list=[new_user.email]
-        #)
+
         return redirect(reverse('users:login'))
 
 

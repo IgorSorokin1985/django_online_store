@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy, reverse
 from django.core.mail import send_mail
 from config.settings import EMAIL_HOST_USER
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 # Create your views here.
 
@@ -19,18 +19,20 @@ class ContactCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('contact_us')
 
 
-class ArticleCreateView(LoginRequiredMixin, CreateView):
+class ArticleCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Article
     fields = ['title', 'text', 'blog_image', 'data_created', 'data_published']
+    permission_required = 'main.work_with_articles'
 
 
     def get_success_url(self):
         return reverse('article_info', args=[self.object.slug])
 
 
-class ArticleDetailView(LoginRequiredMixin, DetailView):
+class ArticleDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Article
     template_name = 'main/article_info.html'
+    permission_required = 'main.work_with_articles'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

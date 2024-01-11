@@ -26,6 +26,7 @@ class ProductListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
         for object in context['product_list']:
+
             active_version = Version.objects.filter(product=object, is_active=True).last()
             if active_version:
                 object.active_version_number = active_version.number_version
@@ -39,8 +40,16 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     form_class = ProductForm
     template_name = 'main/product_info.html'
-    #permission_required = 'product.change_product'
     success_url = reverse_lazy('product_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.object = super().get_object()
+        if self.object.owner == self.request.user or self.request.user.groups.filter(name='Модератор').exists() or self.request.user.is_superuser:
+            context["edit"] = True
+        else:
+            context["edit"] = False
+        return context
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -62,8 +71,6 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = 'main/product_form.html'
-    #permission_required = 'product.change_product'
-    #form_class = ProductForm
 
     def get_form_class(self):
         if self.request.user.groups.filter(name='Модератор').exists():
@@ -73,7 +80,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object()
-        if self.request.user.groups.filter(name='Модератор').exists():
+        if self.request.user.groups.filter(name='Модератор').exists() or self.request.user.is_superuser:
             return self.object
         if self.object.owner != self.request.user:
             raise Http404("Вы не являетесь владельцем этого товара")

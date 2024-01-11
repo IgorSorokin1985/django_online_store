@@ -16,7 +16,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'article_list' %}">Article list</a>
                 </li>
-                {% if user.is_authenticated %}
+                {% if perms.main.work_with_articles %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'article_form' %}">Add article</a>
                 </li>

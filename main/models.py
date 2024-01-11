@@ -37,3 +37,9 @@ class Article(models.Model):
     class Meta:
         verbose_name = 'article'  # Настройка для наименования одного объекта
         verbose_name_plural = 'articles'
+        permissions = [
+            (
+                'work_with_articles',
+                'Can add and correct articles'
+            )
+        ]

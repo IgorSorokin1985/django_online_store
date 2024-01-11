@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate, login
 from django.core.exceptions import ValidationError
 from django.utils.http import urlsafe_base64_decode
 from users.utils import send_email_for_verify
+from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 
 # Create your views here.
@@ -71,14 +72,14 @@ class RegisterView(CreateView):
         return redirect(reverse('users:login'))
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     success_url = reverse_lazy('users:profile')
     form_class = UserForm
 
-
     def get_object(self, queryset=None):
         return self.request.user
+
 
 def forgot_password(request):
     if request.method == 'POST':

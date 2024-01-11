@@ -3,20 +3,30 @@ from catalog.models import Product, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.core.mail import send_mail
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ModeratorProductForm
 from django.forms import inlineformset_factory
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import Http404
 
 # Create your views here.
 
-# Create your views here.
-class ProductListView(ListView):
+
+class ProductListView(LoginRequiredMixin, ListView):
     paginate_by = 6
     model = Product
     template_name = 'main/product_list.html'
 
+    def get_queryset(self):
+        product_list = super().get_queryset()
+        if self.request.user.groups.filter(name='Модератор').exists():
+            return product_list
+        else:
+            return product_list.filter(is_published=True)
+
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
         for object in context['product_list']:
+
             active_version = Version.objects.filter(product=object, is_active=True).last()
             if active_version:
                 object.active_version_number = active_version.number_version
@@ -26,14 +36,23 @@ class ProductListView(ListView):
         return context
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     form_class = ProductForm
     template_name = 'main/product_info.html'
     success_url = reverse_lazy('product_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.object = super().get_object()
+        if self.object.owner == self.request.user or self.request.user.groups.filter(name='Модератор').exists() or self.request.user.is_superuser:
+            context["edit"] = True
+        else:
+            context["edit"] = False
+        return context
 
-class ProductCreateView(CreateView):
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = 'main/product_form.html'
     form_class = ProductForm
@@ -49,15 +68,26 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = 'main/product_form.html'
-    form_class = ProductForm
 
+    def get_form_class(self):
+        if self.request.user.groups.filter(name='Модератор').exists():
+            return ModeratorProductForm
+        else:
+            return ProductForm
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object()
+        if self.request.user.groups.filter(name='Модератор').exists() or self.request.user.is_superuser:
+            return self.object
+        if self.object.owner != self.request.user:
+            raise Http404("Вы не являетесь владельцем этого товара")
+        return self.object
 
     def get_success_url(self):
-        return reverse('product_update', args=[self.kwargs.get('pk')])
+        return reverse('product_info', args=[self.kwargs.get('pk')])
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -81,8 +111,7 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'main/product_confirm_delete.html'
     success_url = reverse_lazy('product_list')

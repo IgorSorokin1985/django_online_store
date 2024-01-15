@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.core.mail import send_mail
@@ -7,6 +7,8 @@ from catalog.forms import ProductForm, VersionForm, ModeratorProductForm
 from django.forms import inlineformset_factory
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import Http404
+from catalog.utils import get_categories
+
 
 # Create your views here.
 
@@ -115,3 +117,10 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'main/product_confirm_delete.html'
     success_url = reverse_lazy('product_list')
+
+
+def categories_list(request):
+    context = {
+        "objects_list": get_categories()
+    }
+    return render(request, 'main/categories_list.html', context=context)

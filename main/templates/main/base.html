@@ -22,6 +22,9 @@
                 </li>
                 {% endif %}
                 <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'categories_list' %}">Categories</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'product_list' %}">Product list</a>
                 </li>
                 {% if user.is_authenticated %}
